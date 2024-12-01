@@ -1,0 +1,21 @@
+{
+  "name": "advent-of-code-2024-typescript",
+  "version": "1.0.0",
+  "description": "My TypeScript solutions for Advent of Code 2024",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "author": "Tadej",
+  "dependencies": {
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/node": "^22.10.1",
+    "prettier": "^3.4.1"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node index.js"
+  }
+}
