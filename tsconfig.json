@@ -4,7 +4,11 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "declaration": true,
+    "rootDir": "src",
+    "preserveSymlinks": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
