@@ -1,7 +1,8 @@
+import { Answer, Input } from '../baseTypes.js';
 import solvePart1 from './part1.js';
 import solvePart2 from './part2.js';
 
-const parseInput = (lines: string[]) => {
+const parseInput = (lines: Input) => {
   const leftList: number[] = [];
   const rightList: number[] = [];
 
@@ -15,7 +16,7 @@ const parseInput = (lines: string[]) => {
   return { leftList, rightList };
 };
 
-const main = (lines: string[]) => {
+const main = (lines: Input): Answer => {
   const { leftList, rightList } = parseInput(lines);
 
   leftList.sort((a, b) => a - b);
