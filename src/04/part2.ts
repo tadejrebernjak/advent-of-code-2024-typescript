@@ -1,39 +1,20 @@
-import { Direction, Grid } from './types.js';
-import { getGridValue, updatePosition } from './utils.js';
+import { Grid } from './types.js';
+import { buildWord, getGridValue, updatePosition } from './utils.js';
 
-const checkWord = (
-  grid: Grid,
-  searchedWord: string,
-  centerX: number,
-  centerY: number,
-  startingPosition: Direction,
-  direction: Direction,
-) => {
-  const positionOffset = Math.floor(searchedWord.length / 2);
-  let { x, y } = updatePosition({ x: centerX, y: centerY }, startingPosition, positionOffset);
-
-  for (let i = 0; i < searchedWord.length; i++) {
-    const character = getGridValue({ x, y }, grid);
-
-    if (character !== searchedWord[i]) {
-      return false;
-    }
-
-    ({ x, y } = updatePosition({ x, y }, direction));
-  }
-
-  return true;
+const reverseString = (string: string) => {
+  return string.split('').reverse().join('');
 };
 
-const checkXWord = (grid: Grid, searchedWord: string, x: number, y: number) => {
-  const fromTopLeft = checkWord(grid, searchedWord, x, y, 'up_left', 'down_right');
-  const fromTopRight = checkWord(grid, searchedWord, x, y, 'up_right', 'down_left');
-  const fromBottomLeft = checkWord(grid, searchedWord, x, y, 'down_left', 'up_right');
-  const fromBottomRight = checkWord(grid, searchedWord, x, y, 'down_right', 'up_left');
+const checkXWord = (grid: Grid, searchedWord: string, centerX: number, centerY: number) => {
+  const offset = Math.floor(searchedWord.length / 2);
 
-  const matches = [fromTopLeft, fromTopRight, fromBottomLeft, fromBottomRight].filter((value) => value);
+  let { x, y } = updatePosition({ x: centerX, y: centerY }, 'up_left', offset);
+  const fromTopLeft = buildWord(grid, searchedWord.length, x, y, 'down_right');
 
-  return matches.length >= 2;
+  ({ x, y } = updatePosition({ x: centerX, y: centerY }, 'up_right', offset));
+  const fromTopRight = buildWord(grid, searchedWord.length, x, y, 'down_left');
+
+  return [fromTopLeft, fromTopRight].every((word) => word === searchedWord || word === reverseString(searchedWord));
 };
 
 const countXWords = (grid: Grid, searchedWord: string) => {
@@ -45,12 +26,14 @@ const countXWords = (grid: Grid, searchedWord: string) => {
   const searchedWordCenter = Math.floor(searchedWord.length / 2);
   const centerLetter = searchedWord[searchedWordCenter];
 
+  const start = searchedWordCenter;
+  const end = grid.length - searchedWordCenter;
   let sum = 0;
 
-  for (let y = searchedWordCenter; y + searchedWordCenter < grid.length; y++) {
-    const row = grid[y];
+  for (let y = start; y < end; y++) {
+    const end = grid[y].length - searchedWordCenter;
 
-    for (let x = searchedWordCenter; x + searchedWordCenter < row.length; x++) {
+    for (let x = start; x < end; x++) {
       if (getGridValue({ x, y }, grid) !== centerLetter) {
         continue;
       }

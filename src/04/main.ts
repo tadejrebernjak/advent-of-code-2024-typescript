@@ -3,18 +3,18 @@ import solvePart1 from './part1.js';
 import solvePart2 from './part2.js';
 import { Grid } from './types.js';
 
-const parseInput = (lines: Input): Grid => {
+const parseInput = (input: Input): Grid => {
   const output = [];
 
-  for (const line of lines) {
+  for (const line of input) {
     output.push(line.split(''));
   }
 
   return output;
 };
 
-const main = (lines: Input): Answer => {
-  const grid = parseInput(lines);
+const main = (input: Input): Answer => {
+  const grid = parseInput(input);
 
   const part1 = solvePart1(grid);
   const part2 = solvePart2(grid);

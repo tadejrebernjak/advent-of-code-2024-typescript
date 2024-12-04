@@ -29,3 +29,15 @@ export const getGridValue = ({ x, y }: Position, grid: Grid) => {
 
   return outOfBounds ? DEFAULT_CHARACTER : grid[y][x];
 };
+
+export const buildWord = (grid: Grid, length: number, x: number, y: number, direction: Direction) => {
+  let word = '';
+  for (let i = 0; i < length; i++) {
+    const character = getGridValue({ x, y }, grid);
+    word += character;
+
+    ({ x, y } = updatePosition({ x, y }, direction));
+  }
+
+  return word;
+};
