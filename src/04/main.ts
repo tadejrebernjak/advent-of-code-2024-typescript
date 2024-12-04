@@ -1,8 +1,9 @@
 import { Answer, Input } from '../baseTypes.js';
 import solvePart1 from './part1.js';
 import solvePart2 from './part2.js';
+import { Grid } from './types.js';
 
-const parseInput = (lines: Input) => {
+const parseInput = (lines: Input): Grid => {
   const output = [];
 
   for (const line of lines) {
@@ -13,10 +14,10 @@ const parseInput = (lines: Input) => {
 };
 
 const main = (lines: Input): Answer => {
-  const inputMatrix = parseInput(lines);
+  const grid = parseInput(lines);
 
-  const part1 = solvePart1(inputMatrix);
-  const part2 = solvePart2(inputMatrix);
+  const part1 = solvePart1(grid);
+  const part2 = solvePart2(grid);
 
   return {
     part1,

@@ -1,22 +1,8 @@
-import { Direction, updatePosition } from './utils.js';
-
-const validateCenterPosition = (input: string[][], searchedWord: string, x: number, y: number) => {
-  const maxPositionOffset = Math.floor(searchedWord.length / 2);
-
-  const clipsLeft = x - maxPositionOffset < 0;
-  const clipsRight = x + maxPositionOffset >= input[y].length;
-  const clipsUp = y - maxPositionOffset < 0;
-  const clipsDown = y + maxPositionOffset >= input.length;
-
-  if (clipsLeft || clipsRight || clipsUp || clipsDown) {
-    return false;
-  }
-
-  return true;
-};
+import { Direction, Grid } from './types.js';
+import { getGridValue, updatePosition } from './utils.js';
 
 const checkWord = (
-  input: string[][],
+  grid: Grid,
   searchedWord: string,
   centerX: number,
   centerY: number,
@@ -27,7 +13,7 @@ const checkWord = (
   let { x, y } = updatePosition({ x: centerX, y: centerY }, startingPosition, positionOffset);
 
   for (let i = 0; i < searchedWord.length; i++) {
-    const character = input[y][x];
+    const character = getGridValue({ x, y }, grid);
 
     if (character !== searchedWord[i]) {
       return false;
@@ -39,42 +25,37 @@ const checkWord = (
   return true;
 };
 
-const checkXWord = (input: string[][], searchedWord: string, x: number, y: number) => {
-  if (!validateCenterPosition(input, searchedWord, x, y)) {
-    return false;
-  }
+const checkXWord = (grid: Grid, searchedWord: string, x: number, y: number) => {
+  const fromTopLeft = checkWord(grid, searchedWord, x, y, 'up_left', 'down_right');
+  const fromTopRight = checkWord(grid, searchedWord, x, y, 'up_right', 'down_left');
+  const fromBottomLeft = checkWord(grid, searchedWord, x, y, 'down_left', 'up_right');
+  const fromBottomRight = checkWord(grid, searchedWord, x, y, 'down_right', 'up_left');
 
-  const fromTopLeft = checkWord(input, searchedWord, x, y, 'up_left', 'down_right');
-  const fromTopRight = checkWord(input, searchedWord, x, y, 'up_right', 'down_left');
-  const fromBottomLeft = checkWord(input, searchedWord, x, y, 'down_left', 'up_right');
-  const fromBottomRight = checkWord(input, searchedWord, x, y, 'down_right', 'up_left');
-
-  const matches = [fromTopLeft, fromTopRight, fromBottomLeft, fromBottomRight].filter((value) => value === true);
+  const matches = [fromTopLeft, fromTopRight, fromBottomLeft, fromBottomRight].filter((value) => value);
 
   return matches.length >= 2;
 };
 
-const countXWords = (input: string[][], searchedWord: string) => {
+const countXWords = (grid: Grid, searchedWord: string) => {
   if (searchedWord.length % 2 === 0) {
     console.log(`Searched word: ${searchedWord} should have an odd length`);
     return 0;
   }
 
-  const centerIndex = Math.floor(searchedWord.length / 2);
-  const centerLetter = searchedWord[centerIndex];
+  const searchedWordCenter = Math.floor(searchedWord.length / 2);
+  const centerLetter = searchedWord[searchedWordCenter];
 
   let sum = 0;
 
-  for (const yKey in input) {
-    for (const xKey in input[yKey]) {
-      const y = parseInt(yKey);
-      const x = parseInt(xKey);
+  for (let y = searchedWordCenter; y + searchedWordCenter < grid.length; y++) {
+    const row = grid[y];
 
-      if (input[y][x] !== centerLetter) {
+    for (let x = searchedWordCenter; x + searchedWordCenter < row.length; x++) {
+      if (getGridValue({ x, y }, grid) !== centerLetter) {
         continue;
       }
 
-      if (checkXWord(input, searchedWord, x, y)) {
+      if (checkXWord(grid, searchedWord, x, y)) {
         sum++;
       }
     }
@@ -83,10 +64,8 @@ const countXWords = (input: string[][], searchedWord: string) => {
   return sum;
 };
 
-const solvePart2 = (input: string[][]) => {
-  const searchedWord = 'MAS';
-
-  const result = countXWords(input, searchedWord);
+const solvePart2 = (grid: Grid) => {
+  const result = countXWords(grid, 'MAS');
 
   return result;
 };

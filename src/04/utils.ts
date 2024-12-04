@@ -1,9 +1,6 @@
-export type Direction = 'up' | 'up_right' | 'right' | 'down_right' | 'down' | 'down_left' | 'left' | 'up_left';
+import { Direction, Grid, Position } from './types.js';
 
-export interface Position {
-  x: number;
-  y: number;
-}
+export const DEFAULT_CHARACTER = '.';
 
 export const updatePosition = ({ x, y }: Position, direction: Direction, offset?: number) => {
   offset = offset || 1;
@@ -25,4 +22,10 @@ export const updatePosition = ({ x, y }: Position, direction: Direction, offset?
   }
 
   return { x, y };
+};
+
+export const getGridValue = ({ x, y }: Position, grid: Grid) => {
+  const outOfBounds = y < 0 || x < 0 || y >= grid.length || y >= grid[y].length;
+
+  return outOfBounds ? DEFAULT_CHARACTER : grid[y][x];
 };

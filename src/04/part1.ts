@@ -1,25 +1,9 @@
-import { Direction, updatePosition } from './utils.js';
+import { Direction, Grid } from './types.js';
+import { getGridValue, updatePosition } from './utils.js';
 
-const validateDirection = (input: string[][], searchedWord: string, x: number, y: number, direction: Direction) => {
-  const clipsLeft = direction.includes('left') && x + 1 - searchedWord.length < 0;
-  const clipsRight = direction.includes('right') && x + searchedWord.length > input[y].length;
-  const clipsUp = direction.includes('up') && y + 1 - searchedWord.length < 0;
-  const clipsDown = direction.includes('down') && y + searchedWord.length > input.length;
-
-  if (clipsLeft || clipsRight || clipsUp || clipsDown) {
-    return false;
-  }
-
-  return true;
-};
-
-const checkWord = (input: string[][], searchedWord: string, x: number, y: number, direction: Direction) => {
-  if (!validateDirection(input, searchedWord, x, y, direction)) {
-    return false;
-  }
-
+const checkWord = (grid: Grid, searchedWord: string, x: number, y: number, direction: Direction) => {
   for (let i = 0; i < searchedWord.length; i++) {
-    const character = input[y][x];
+    const character = getGridValue({ x, y }, grid);
 
     if (character !== searchedWord[i]) {
       return false;
@@ -31,22 +15,21 @@ const checkWord = (input: string[][], searchedWord: string, x: number, y: number
   return true;
 };
 
-const countWords = (input: string[][], searchedWord: string) => {
+const countWords = (grid: Grid, searchedWord: string) => {
   const DIRECTIONS: Direction[] = ['up', 'up_right', 'right', 'down_right', 'down', 'down_left', 'left', 'up_left'];
 
   let sum = 0;
 
-  for (const yKey in input) {
-    for (const xKey in input[yKey]) {
-      const y = parseInt(yKey);
-      const x = parseInt(xKey);
+  for (let y = 0; y < grid.length; y++) {
+    const row = grid[y];
 
-      if (input[y][x] !== searchedWord[0]) {
+    for (let x = 0; x < row.length; x++) {
+      if (grid[y][x] !== searchedWord[0]) {
         continue;
       }
 
       for (const direction of DIRECTIONS) {
-        if (checkWord(input, searchedWord, x, y, direction)) {
+        if (checkWord(grid, searchedWord, x, y, direction)) {
           sum++;
         }
       }
@@ -56,10 +39,8 @@ const countWords = (input: string[][], searchedWord: string) => {
   return sum;
 };
 
-const solvePart1 = (input: string[][]) => {
-  const searchedWord = 'XMAS';
-
-  const result = countWords(input, searchedWord);
+const solvePart1 = (grid: Grid) => {
+  const result = countWords(grid, 'XMAS');
 
   return result;
 };
