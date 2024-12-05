@@ -1,10 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 
-const DAYS = fs.readdirSync('src');
+const DAYS = fs.readdirSync('src').filter((file) => !path.extname(file));
 
 const processArgs = () => {
-  const args = process.argv.slice(2);
+  let args = process.argv.slice(2);
 
   const containsAll = args.some((arg) => arg === 'all');
   if (containsAll) {
@@ -49,9 +49,9 @@ const runDay = async (day) => {
   console.log('Part 2:', answers.part2, '\n');
 };
 
-const runDays = (days) => {
+const runDays = async (days) => {
   for (const day of days) {
-    runDay(day);
+    await runDay(day);
   }
 };
 

@@ -2,11 +2,11 @@ import { Answer, Input } from '../baseTypes.js';
 import solvePart1 from './part1.js';
 import solvePart2 from './part2.js';
 
-const parseInput = (lines: Input) => {
+const parseInput = (input: Input) => {
   const leftList: number[] = [];
   const rightList: number[] = [];
 
-  lines.forEach((line) => {
+  input.forEach((line) => {
     const [leftNumber, rightNumber] = line.split('   ');
 
     leftList.push(parseInt(leftNumber));
@@ -16,8 +16,8 @@ const parseInput = (lines: Input) => {
   return { leftList, rightList };
 };
 
-const main = (lines: Input): Answer => {
-  const { leftList, rightList } = parseInput(lines);
+const main = (input: Input): Answer => {
+  const { leftList, rightList } = parseInput(input);
 
   leftList.sort((a, b) => a - b);
   rightList.sort((a, b) => a - b);
