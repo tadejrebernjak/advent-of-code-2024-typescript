@@ -21,7 +21,7 @@ const parseInput = (input: Input) => {
   let readingConstraints = true;
 
   input.forEach((line) => {
-    if (line === '\r') {
+    if (!line) {
       readingConstraints = false;
       return;
     }

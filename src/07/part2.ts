@@ -19,11 +19,18 @@ const isSolvable = ({ expectedResult, numbers }: Equation, index: number, curren
     return [addition, multiplication, concatenation].some((result) => result === expectedResult);
   }
 
-  const recursionFromAddition = isSolvable({ expectedResult, numbers }, index + 1, addition);
-  const recursionFromMultiplication = isSolvable({ expectedResult, numbers }, index + 1, multiplication);
-  const recursionFromConcatenation = isSolvable({ expectedResult, numbers }, index + 1, concatenation);
+  // const recursionFromAddition = isSolvable({ expectedResult, numbers }, index + 1, addition);
+  // const recursionFromMultiplication = isSolvable({ expectedResult, numbers }, index + 1, multiplication);
+  // const recursionFromConcatenation = isSolvable({ expectedResult, numbers }, index + 1, concatenation);
 
-  return recursionFromAddition || recursionFromMultiplication || recursionFromConcatenation;
+  // return recursionFromAddition || recursionFromMultiplication || recursionFromConcatenation;
+
+  // Bottom method is faster -> if a branch finds true, all other recursions are skipped
+  return (
+    isSolvable({ expectedResult, numbers }, index + 1, addition) ||
+    isSolvable({ expectedResult, numbers }, index + 1, multiplication) ||
+    isSolvable({ expectedResult, numbers }, index + 1, concatenation)
+  );
 };
 
 const solvePart2 = (equations: Equation[]) => {

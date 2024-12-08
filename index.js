@@ -41,7 +41,7 @@ const runDay = async (day) => {
     return;
   }
 
-  const lines = input.split('\n');
+  const lines = input.split('\r\n');
   const answers = script(lines);
 
   console.log(`---------- Day ${day} ---------- `);

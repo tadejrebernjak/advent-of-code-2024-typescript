@@ -20,10 +20,6 @@ const parseInput = (input: Input) => {
     const line = input[y];
     const row = line.split('');
 
-    if (y < line.length - 1) {
-      row.pop();
-    }
-
     if (startPosition.x === -1) {
       findStartPosition(row, startPosition, y);
     }
