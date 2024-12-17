@@ -6,15 +6,15 @@ const getMapKey = ({ x, y }: Coordinates) => {
 };
 
 const robotsAreNotOverlapping = (positions: Coordinates[]) => {
-  const positionsMap = new Map<string, number>();
+  const uniquePositions = new Set<string>();
 
   for (const position of positions) {
     const key = getMapKey(position);
-    if (positionsMap.has(key)) {
+    if (uniquePositions.has(key)) {
       return false;
     }
 
-    positionsMap.set(key, 1);
+    uniquePositions.add(key);
   }
 
   return true;
