@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const DAYS = fs.readdirSync('src').filter((file) => !path.extname(file));
+const DAYS = fs.readdirSync('src/days').filter((file) => !path.extname(file));
 
 const processArgs = () => {
   let args = process.argv.slice(2);
@@ -16,7 +16,7 @@ const processArgs = () => {
 };
 
 const importDayFiles = async (day) => {
-  const importPath = `./dist/${day}/main.js`;
+  const importPath = `./dist/days/${day}/main.js`;
   const inputPath = path.join('inputs', `${day}.txt`);
 
   try {
