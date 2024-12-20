@@ -25,7 +25,7 @@ export const getGridValue = (grid: Grid | NumberGrid, { x, y }: Position) => {
   return isInBounds(grid, { x, y }) ? grid[y][x] : null;
 };
 
-export const setGridValue = (grid: Grid, { x, y }: Position, value: string) => {
+export const setGridValue = (grid: Grid | NumberGrid, { x, y }: Position, value: any) => {
   if (!isInBounds(grid, { x, y })) {
     return;
   }
@@ -74,4 +74,16 @@ export const getNewDirectionCardinal = (direction: DirectionCardinal, turn: numb
   }
 
   return DIRECTIONS_CARDINAL[newIndex];
+};
+
+export const getOppositeDirectionCardinal = (direction: DirectionCardinal) => {
+  const directionIndex = DIRECTIONS_CARDINAL.indexOf(direction);
+  const oppositeIndex = (directionIndex + DIRECTIONS_CARDINAL.length / 2) % DIRECTIONS_CARDINAL.length;
+
+  return DIRECTIONS_CARDINAL[oppositeIndex];
+};
+
+export const getExploreDirectionsCardinal = (direction: DirectionCardinal) => {
+  const backwardsDirection = getOppositeDirectionCardinal(direction);
+  return DIRECTIONS_CARDINAL.filter((direction) => direction !== backwardsDirection);
 };
