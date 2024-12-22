@@ -1,13 +1,9 @@
 import { Position } from '../../types/grid.js';
+import { mod } from '../../utils/number.js';
 import { Dimension, Robot } from './types.js';
 
 const moveRobot = (position: number, velocity: number, bound: number, seconds: number) => {
-  const result = (position + velocity * seconds) % bound;
-  if (result >= 0) {
-    return result;
-  }
-
-  return bound + result;
+  return mod(position + velocity * seconds, bound);
 };
 
 export const simulateRobots = ({ width, height }: Dimension, robots: Robot[], seconds: number) => {

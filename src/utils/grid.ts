@@ -1,4 +1,5 @@
 import { DirectionCardinal, DirectionOrdinal, Grid, NumberGrid, Position } from '../types/grid.js';
+import { mod } from './number.js';
 
 export const DIRECTIONS_ORDINAL: DirectionOrdinal[] = [
   'up',
@@ -67,11 +68,7 @@ export const positionsInclude = (positions: Position[], { x, y }: Position) => {
 
 export const getNewDirectionCardinal = (direction: DirectionCardinal, turn: number) => {
   const currentIndex = DIRECTIONS_CARDINAL.indexOf(direction);
-
-  let newIndex = (currentIndex + turn) % DIRECTIONS_CARDINAL.length;
-  if (newIndex < 0) {
-    newIndex = DIRECTIONS_CARDINAL.length + newIndex;
-  }
+  const newIndex = mod(currentIndex + turn, DIRECTIONS_CARDINAL.length);
 
   return DIRECTIONS_CARDINAL[newIndex];
 };
